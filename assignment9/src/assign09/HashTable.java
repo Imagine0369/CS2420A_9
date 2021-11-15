@@ -136,9 +136,55 @@ public class HashTable <K, V> implements Map<K, V> {
 		//for()
 	}
 
+	/**
+	 * Removes the mapping for a key from this map if it is present.
+	 * 
+	 * O(1)
+	 *
+	 * @param key
+	 * @return the previous value associated with key, or null if there was no
+	 *         mapping for key
+	 */
 	@Override
 	public V remove(K key) {
-		// TODO Auto-generated method stub
+		// get value
+		MapEntry<K, V> removedEntry = getEntry(key);
+
+		// if entry exists
+		if (!removedEntry.equals(null)) {
+			//get value from the key
+			V removedVal = removedEntry.getValue();
+			//delete the actual entry now
+			table.get(key.hashCode() % capacity).remove(removedEntry);
+			// update size
+			size--;
+			//return the value from the entry we removed
+			return removedVal;
+		}
+
+		// item does not contain key, return null
+		return null;
+
+	}
+
+	/**
+	 * Returns the address of a mapEntry of a given key
+	 * 
+	 * @param key
+	 * @return
+	 */
+	private MapEntry<K, V> getEntry(K key) {
+		// Iterate through the map entries inside the linked list associated with the
+		// appropriate index value
+		for (MapEntry<K, V> item : table.get(key.hashCode() % capacity)) {
+			// If key value within MapEntry item equals key we are looking for, return that
+			// entry
+			if (item.getKey().equals(key)) {
+				return item;
+			}
+		}
+
+		// no item was found with that key
 		return null;
 	}
 
