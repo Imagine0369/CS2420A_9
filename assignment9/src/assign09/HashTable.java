@@ -42,10 +42,16 @@ public class HashTable <K, V> implements Map<K, V> {
 		loadFactor = size / capacity;
 	}
 	
+	/**
+	 * Removes all mappings from this map.
+	 * 
+	 * O(table length)
+	 */
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		for(LinkedList<MapEntry<K,V>> list: table) {
+			list.clear();
+		}
 	}
 
 	@Override
