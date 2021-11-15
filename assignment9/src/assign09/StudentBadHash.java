@@ -74,8 +74,7 @@ public class StudentBadHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
-		
-		return 0;
+		int firstNum = Integer.parseInt(Integer.toString(uid).substring(0, 1));
+		return firstNum;
 	}
 }
