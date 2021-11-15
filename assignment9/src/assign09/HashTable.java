@@ -43,9 +43,12 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	@Override
 	public void clear() {
+		//remove each list in each element of the hash table.
 		for (LinkedList<MapEntry<K, V>> list : table) {
 			list.clear();
 		}
+		//update size
+		size = 0;
 	}
 
 	@Override
