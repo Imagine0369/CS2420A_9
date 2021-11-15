@@ -73,7 +73,6 @@ public class StudentGoodHash {
 		ascii = (int) (ascii*0.3141592);
 		ascii += ascii;
 		ascii = Math.abs(ascii);
-		System.out.println(ascii);
 		return ascii;
 	}
 
