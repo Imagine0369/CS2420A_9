@@ -35,6 +35,13 @@ public class HashTable <K, V> implements Map<K, V> {
 		}
 	}
 	
+	/**
+	 * Updates the load factor for our hash table
+	 */
+	private void updateLoadFactor() {
+		loadFactor = size / capacity;
+	}
+	
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
@@ -158,6 +165,7 @@ public class HashTable <K, V> implements Map<K, V> {
 			table.get(key.hashCode() % capacity).remove(removedEntry);
 			// update size
 			size--;
+			updateLoadFactor();
 			//return the value from the entry we removed
 			return removedVal;
 		}
