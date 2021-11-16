@@ -9,7 +9,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	private final double LOADLIMIT = 10.0;
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
 	private int size;
-	private int capacity;
+	public int capacity;
 	private double loadFactor;
 
 	public HashTable(int capacity) {
@@ -43,11 +43,9 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	@Override
 	public void clear() {
-		//remove each list in each element of the hash table.
 		for (LinkedList<MapEntry<K, V>> list : table) {
 			list.clear();
 		}
-		//update size
 		size = 0;
 	}
 
@@ -147,6 +145,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	}
 
 	private void growAndRehash() {
+		System.out.println(capacity * 2);
 		HashTable<K, V> grown = new HashTable<K, V>(capacity * 2);
 
 		// Copy old values, delete and rehash them
