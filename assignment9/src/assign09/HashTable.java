@@ -53,7 +53,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	public boolean containsKey(K key) {
 		// Iterate through the map entries inside the linked list associated with the
 		// appropriate index value
-		for (MapEntry<K, V> item : table.get(key.hashCode() % capacity)) {
+		for (MapEntry<K, V> item : table.get(getHashCode( key ) % capacity)) {
 			// If key value within MapEntry item equals key we are looking for, return true
 			if (item.getKey().equals(key)) {
 				return true;
@@ -97,7 +97,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public V get(K key) {
 		// Iterate through entries within the appropriate LinkedList
-		for (MapEntry<K, V> entry : table.get(key.hashCode() % capacity)) {
+		for (MapEntry<K, V> entry : table.get(getHashCode( key ) % capacity)) {
 			// If entry key value equals key, return entry value item
 			if (entry.getKey().equals(key)) {
 				return entry.getValue();
@@ -136,7 +136,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public V put(K key, V value) {
 		// Iterate through LinkedList at appropriate index
-		for (MapEntry<K, V> entry : table.get(key.hashCode() % capacity)) {
+		for (MapEntry<K, V> entry : table.get(getHashCode( key ) % capacity)) {
 			// If entry key value already exists, simply updates its value
 			if (entry.getKey().equals(key)) {
 				V returnVal = entry.getValue();
@@ -158,7 +158,7 @@ public class HashTable<K, V> implements Map<K, V> {
 		// Put entry into the LinkedList at appropriate index value
 		// Appropriate index value is determined by keys hashcode mod capacity
 		// table is ArrayList
-		table.get(key.hashCode() % capacity).add(entry);
+		table.get(getHashCode( key ) % capacity).add(entry);
 		size++;
 
 		return null;
@@ -191,7 +191,7 @@ public class HashTable<K, V> implements Map<K, V> {
 			// get value from the key
 			V removedVal = removedEntry.getValue();
 			// delete the actual entry now
-			table.get(key.hashCode() % capacity).remove(removedEntry);
+			table.get(getHashCode( key ) % capacity).remove(removedEntry);
 			// update size
 			size--;
 			updateLoadFactor();
@@ -212,7 +212,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	private MapEntry<K, V> getEntry(K key) {
 		// Iterate through the map entries inside the linked list associated with the
 		// appropriate index value
-		for (MapEntry<K, V> item : table.get(key.hashCode() % capacity)) {
+		for (MapEntry<K, V> item : table.get(getHashCode( key ) % capacity)) {
 			// If key value within MapEntry item equals key we are looking for, return that
 			// entry
 			if (item.getKey().equals(key)) {
