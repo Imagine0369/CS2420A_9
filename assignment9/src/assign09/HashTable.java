@@ -112,6 +112,26 @@ public class HashTable<K, V> implements Map<K, V> {
 	public boolean isEmpty() {
 		return size == 0;
 	}
+	
+	/**
+	 * Calls the objects hashCode method and returns the positive
+	 * version of the hash
+	 * 
+	 * @param key	key to get hashCode for
+	 * @return		returns the hash code of a given key
+	 */
+	private int getHashCode(K key) {
+		//take absolute value of hash
+		int hash = Math.abs( key.hashCode() );
+		
+		//if hash value is still negative
+		if (hash < 0) {
+			//value is max negative int so add 1 and re absolute value it
+			return Math.abs( hash+1 );
+		}
+		//return normal hash
+		return hash;
+	}
 
 	@Override
 	public V put(K key, V value) {
