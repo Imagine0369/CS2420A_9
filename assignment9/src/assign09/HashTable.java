@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * HashTable Class which stores MapEntry values using Separate Chaining
+ * technique.
+ * 
+ * @author Mike Phelps and Seth Polevoi
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class HashTable<K, V> implements Map<K, V> {
 
 	private final double LOADLIMIT = 10.0;
@@ -12,6 +21,11 @@ public class HashTable<K, V> implements Map<K, V> {
 	public int capacity;
 	private double loadFactor;
 
+	/**
+	 * Creates new HashTable with a specific capacity
+	 * 
+	 * @param capacity int value
+	 */
 	public HashTable(int capacity) {
 		size = 0;
 		this.capacity = capacity;
@@ -23,6 +37,9 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	}
 
+	/**
+	 * Creates new HashTable
+	 */
 	public HashTable() {
 		size = 0;
 		capacity = 100;
@@ -41,6 +58,10 @@ public class HashTable<K, V> implements Map<K, V> {
 		loadFactor = size / capacity;
 	}
 
+	/**
+	 * Removes all mappings from this map.
+	 *
+	 */
 	@Override
 	public void clear() {
 		for (LinkedList<MapEntry<K, V>> list : table) {
@@ -49,11 +70,17 @@ public class HashTable<K, V> implements Map<K, V> {
 		size = 0;
 	}
 
+	/**
+	 * Determines whether this map contains the specified key.
+	 *
+	 * @param key
+	 * @return true if this map contains the key, false otherwise
+	 */
 	@Override
 	public boolean containsKey(K key) {
 		// Iterate through the map entries inside the linked list associated with the
 		// appropriate index value
-		for (MapEntry<K, V> item : table.get(getHashCode( key ) % capacity)) {
+		for (MapEntry<K, V> item : table.get(getHashCode(key) % capacity)) {
 			// If key value within MapEntry item equals key we are looking for, return true
 			if (item.getKey().equals(key)) {
 				return true;
@@ -63,6 +90,14 @@ public class HashTable<K, V> implements Map<K, V> {
 		return false;
 	}
 
+	/**
+	 * Determines whether this map contains the specified value.
+	 *
+	 * 
+	 * @param value
+	 * @return true if this map contains one or more keys to the specified value,
+	 *         false otherwise
+	 */
 	@Override
 	public boolean containsValue(V value) {
 		// Iterate through each item in each linked list to find if
@@ -78,6 +113,13 @@ public class HashTable<K, V> implements Map<K, V> {
 		return false;
 	}
 
+	/**
+	 * Returns an ArrayList view of the mappings contained in this map, where the
+	 * ordering of mapping in the list is insignificant.
+	 * 
+	 * @return an ArrayList object containing all mapping (i.e., entries) in this
+	 *         map
+	 */
 	@Override
 	public List<MapEntry<K, V>> entries() {
 		// List to be built upon and returned
@@ -94,10 +136,17 @@ public class HashTable<K, V> implements Map<K, V> {
 		return returnList;
 	}
 
+	/**
+	 * Gets the value to which the specified key is mapped.
+	 * 
+	 * @param key
+	 * @return the value to which the specified key is mapped, or null if this map
+	 *         contains no mapping for the key
+	 */
 	@Override
 	public V get(K key) {
 		// Iterate through entries within the appropriate LinkedList
-		for (MapEntry<K, V> entry : table.get(getHashCode( key ) % capacity)) {
+		for (MapEntry<K, V> entry : table.get(getHashCode(key) % capacity)) {
 			// If entry key value equals key, return entry value item
 			if (entry.getKey().equals(key)) {
 				return entry.getValue();
@@ -108,35 +157,50 @@ public class HashTable<K, V> implements Map<K, V> {
 		return null;
 	}
 
+	/**
+	 * Determines whether this map contains any mappings.
+	 * 
+	 * @return true if this map contains no mappings, false otherwise
+	 */
 	@Override
 	public boolean isEmpty() {
 		return size == 0;
 	}
-	
+
 	/**
-	 * Calls the objects hashCode method and returns the positive
-	 * version of the hash
+	 * Calls the objects hashCode method and returns the positive version of the
+	 * hash
 	 * 
-	 * @param key	key to get hashCode for
-	 * @return		returns the hash code of a given key
+	 * @param key key to get hashCode for
+	 * @return returns the hash code of a given key
 	 */
 	private int getHashCode(K key) {
-		//take absolute value of hash
-		int hash = Math.abs( key.hashCode() );
-		
-		//if hash value is still negative
+		// take absolute value of hash
+		int hash = Math.abs(key.hashCode());
+
+		// if hash value is still negative
 		if (hash < 0) {
-			//value is max negative int so add 1 and re absolute value it
-			return Math.abs( hash+1 );
+			// value is max negative int so add 1 and re absolute value it
+			return Math.abs(hash + 1);
 		}
-		//return normal hash
+		// return normal hash
 		return hash;
 	}
 
+	/**
+	 * Associates the specified value with the specified key in this map. (I.e., if
+	 * the key already exists in this map, resets the value; otherwise adds the
+	 * specified key-value pair.)
+	 * 
+	 * @param key
+	 * @param value
+	 * @return the previous value associated with key, or null if there was no
+	 *         mapping for key
+	 */
 	@Override
 	public V put(K key, V value) {
 		// Iterate through LinkedList at appropriate index
-		for (MapEntry<K, V> entry : table.get(getHashCode( key ) % capacity)) {
+		for (MapEntry<K, V> entry : table.get(getHashCode(key) % capacity)) {
 			// If entry key value already exists, simply updates its value
 			if (entry.getKey().equals(key)) {
 				V returnVal = entry.getValue();
@@ -158,29 +222,41 @@ public class HashTable<K, V> implements Map<K, V> {
 		// Put entry into the LinkedList at appropriate index value
 		// Appropriate index value is determined by keys hashcode mod capacity
 		// table is ArrayList
-		table.get(getHashCode( key ) % capacity).add(entry);
+		table.get(getHashCode(key) % capacity).add(entry);
 		size++;
 
 		return null;
 	}
 
+	/**
+	 * Helper method used to grow and rehash current map
+	 * 
+	 */
 	private void growAndRehash() {
-		System.out.println(capacity * 2);
+		// Create new hastable with double the capacity of the current table
 		HashTable<K, V> grown = new HashTable<K, V>(capacity * 2);
 
-		// Copy old values, delete and rehash them
+		// Copy and rehash values into new table
 		for (LinkedList<MapEntry<K, V>> list : table) {
 			for (MapEntry<K, V> entry : list) {
 				grown.put(entry.getKey(), entry.getValue());
 			}
 		}
 
+		// Set current table with new tables values
 		this.table = grown.table;
 		this.size = grown.size();
 		this.capacity = grown.capacity;
 		this.updateLoadFactor();
 	}
 
+	/**
+	 * Removes the mapping for a key from this map if it is present.
+	 *
+	 * @param key
+	 * @return the previous value associated with key, or null if there was no
+	 *         mapping for key
+	 */
 	@Override
 	public V remove(K key) {
 		// get value
@@ -191,7 +267,7 @@ public class HashTable<K, V> implements Map<K, V> {
 			// get value from the key
 			V removedVal = removedEntry.getValue();
 			// delete the actual entry now
-			table.get(getHashCode( key ) % capacity).remove(removedEntry);
+			table.get(getHashCode(key) % capacity).remove(removedEntry);
 			// update size
 			size--;
 			updateLoadFactor();
@@ -212,7 +288,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	private MapEntry<K, V> getEntry(K key) {
 		// Iterate through the map entries inside the linked list associated with the
 		// appropriate index value
-		for (MapEntry<K, V> item : table.get(getHashCode( key ) % capacity)) {
+		for (MapEntry<K, V> item : table.get(getHashCode(key) % capacity)) {
 			// If key value within MapEntry item equals key we are looking for, return that
 			// entry
 			if (item.getKey().equals(key)) {
@@ -224,6 +300,12 @@ public class HashTable<K, V> implements Map<K, V> {
 		return null;
 	}
 
+	/**
+	 * Determines the number of mappings in this map.
+	 *
+	 * 
+	 * @return the number of mappings in this map
+	 */
 	@Override
 	public int size() {
 		return size;
