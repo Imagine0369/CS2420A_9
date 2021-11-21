@@ -263,7 +263,7 @@ public class HashTable<K, V> implements Map<K, V> {
 		MapEntry<K, V> removedEntry = getEntry(key);
 
 		// if entry exists
-		if (!removedEntry.equals(null)) {
+		if (removedEntry != null) {
 			// get value from the key
 			V removedVal = removedEntry.getValue();
 			// delete the actual entry now
