@@ -17,7 +17,8 @@ class HashTableTest {
 	StudentBadHash ada = new StudentBadHash(1004203, "Ada", "Lovelace");
 	StudentBadHash edsger = new StudentBadHash(1010661, "Edsger", "Dijkstra");
 	StudentBadHash grace = new StudentBadHash(1019941, "Grace", "Hopper");
-
+	
+	HashTable<StudentGoodHash, Double> goodTableEmpty = new HashTable<StudentGoodHash, Double>();
 	StudentGoodHash john = new StudentGoodHash(1019999, "John", "Turing");
 	StudentGoodHash jacob = new StudentGoodHash(1004203, "Jacob", "Lovelace");
 	StudentGoodHash david = new StudentGoodHash(1010661, "Daid", "Dijkstra");
@@ -75,7 +76,138 @@ class HashTableTest {
 
 //-----------------------clear Tests Begin----------------------------
 
-	// TODO
+	@Test
+	void testClearCommon() {
+		assertTrue(0 == goodTable.size());
+		goodTable.put(john, 33.2);
+		goodTable.put(jacob, 3.2);
+		goodTable.put(david, 4.6);
+		goodTable.put(sarah, 1.2);
+		assertFalse(0 == goodTable.size());
+		
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+	}
+	
+	@Test
+	void testClearTwice() {
+		goodTable.put(john, 33.2);
+		goodTable.put(jacob, 3.2);
+		goodTable.put(david, 4.6);
+		goodTable.put(sarah, 1.2);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		
+		goodTable.put(david, 3.8);
+		assertFalse(0 == goodTable.size());
+		
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+	}
+	
+	@Test
+	void testClearTwiceOnDouble() {
+		goodTable.put(john, 33.2);
+		goodTable.put(jacob, 3.2);
+		goodTable.put(david, 4.6);
+		goodTable.put(sarah, 1.2);
+		assertFalse(0 == badTable.size());
+		badTable.clear();
+		assertTrue(0 == badTable.size());
+		
+		goodTable.put(john, 3.8);
+		goodTable.put(david, 4.0);
+		goodTable.put(john, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertFalse(0 == goodTable.size());
+		
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+	}
+	
+	@Test
+	void testClearThrice() {
+		goodTable.put(john, 33.2);
+		goodTable.put(jacob, 3.2);
+		goodTable.put(david, 4.6);
+		goodTable.put(sarah, 1.2);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertFalse(0 == goodTable.size());
+		
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		
+		goodTable.put(david, 4.6);
+		goodTable.put(sarah, 1.2);
+		assertFalse(0 == goodTable.size());
+		
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+	}
+	
+	@Test
+	void testClearOnEmpty1() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());	
+	}
+	
+	@Test
+	void testClearOnEmpty2() {
+		assertTrue(0 == goodTableEmpty.size());
+		goodTableEmpty.clear();
+		assertTrue(0 == goodTableEmpty.size());	
+	}
+	
+	@Test
+	void testClearGetValueAfter() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		
+		goodTable.put(sarah, 36.0);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+		assertEquals(null, goodTable.get(sarah));		
+	}
+	
+	@Test
+	void testClearInRow() {
+		assertTrue(0 == goodTableEmpty.size());
+		goodTableEmpty.clear();
+		goodTableEmpty.clear();
+		goodTableEmpty.clear();
+		assertTrue(0 == goodTableEmpty.size());	
+		
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertFalse(0 == goodTable.size());
+		goodTable.clear();
+		goodTable.clear();
+		goodTable.clear();
+		assertTrue(0 == goodTable.size());
+	}
 
 //-----------------------clear Tests End------------------------------	
 
@@ -114,7 +246,114 @@ class HashTableTest {
 
 //-----------------------size Tests Begin-----------------------------
 
-	// TODO:
+	@Test
+	void testSizeCommon() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertEquals(4, badTable.size());
+	}
+	
+	@Test
+	void testSizeEmpty() {
+		assertEquals(0, goodTableEmpty.size());
+	}
+	
+	@Test
+	void testSizeAfterPutOnEmpty() {
+		assertEquals(0, goodTableEmpty.size());
+		goodTableEmpty.put(david, 3.2);
+		assertEquals(1,goodTableEmpty.size());
+	}
+	@Test
+	void testSizeAfterPutOnNormal() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		assertEquals(3, goodTable.size());
+		goodTable.put(sarah, 4.0);
+		assertEquals(4,goodTable.size());
+	}
+	
+	@Test
+	void testSizeAfterClear() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertEquals(4, goodTable.size());
+		goodTable.clear();
+		assertEquals(0, goodTable.size());
+		assertEquals(goodTableEmpty.size(), goodTable.size());
+	}
+	
+	@Test
+	void testSizeAfterRemove() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertEquals(4, goodTable.size());
+		goodTable.remove(jacob);
+		assertEquals(3, goodTable.size());	
+	}
+	
+	@Test
+	void testSizeSequentialPut() {
+		assertEquals(0, goodTable.size());
+		goodTable.put(john, 3.8);
+		assertEquals(1, goodTable.size());
+		goodTable.put(jacob, 4.0);
+		assertEquals(2, goodTable.size());
+		goodTable.put(david, 3.22);
+		assertEquals(3, goodTable.size());
+		goodTable.put(sarah, 4.0);
+		assertEquals(4, goodTable.size());
+		goodTable.remove(jacob);
+		assertEquals(3, goodTable.size());	
+	}
+	
+	@Test
+	void testSizeSequentialRemove() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.0);
+		assertEquals(4, goodTable.size());
+		goodTable.remove(john);
+		assertEquals(3, goodTable.size());
+		goodTable.remove(jacob);
+		assertEquals(2, goodTable.size());
+		goodTable.remove(david);
+		assertEquals(1, goodTable.size());
+		goodTable.remove(sarah);
+		assertEquals(0, goodTable.size());
+	}
+	
+	@Test
+	void testSizeWithDuplicatePut() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		assertEquals(3, goodTable.size());
+		goodTable.put(david, 4.0);
+		assertEquals(3,goodTable.size());
+		goodTable.put(sarah, 4.0);
+		assertEquals(4,goodTable.size());
+	}
+	
+	@Test
+	void testSizeWithDuplicateRemove() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		assertEquals(3, goodTable.size());
+		goodTable.remove(david);
+		assertEquals(2,goodTable.size());
+		goodTable.remove(david);
+		assertEquals(2,goodTable.size());
+	}
 
 //-----------------------size Tests End-------------------------------		
 
@@ -209,7 +448,98 @@ class HashTableTest {
 
 //-----------------------remove Tests Start--------------------------
 
-	// TODO:
+	@Test
+	void testRemoveCommonOnGood() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		assertEquals(4.0, goodTable.remove(jacob));
+	}
+	
+	@Test
+	void testRemove1st() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		goodTable.remove(john);
+		for(MapEntry<StudentGoodHash,Double> element: goodTable.entries()) {
+			double unit = element.getValue();
+			assertFalse(unit == 3.8);
+		}
+	}
+	
+	@Test
+	void testRemove2nd() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		goodTable.remove(jacob);
+		for(MapEntry<StudentGoodHash,Double> element: goodTable.entries()) {
+			double unit = element.getValue();
+			assertFalse(unit == 4.0);
+		}
+	}
+	
+	@Test
+	void testRemove3rd() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		goodTable.remove(david);
+		for(MapEntry<StudentGoodHash,Double> element: goodTable.entries()) {
+			double unit = element.getValue();
+			assertFalse(unit == 3.22);
+		}
+	}
+	
+	@Test
+	void testRemove4th() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		goodTable.remove(sarah);
+		for(MapEntry<StudentGoodHash,Double> element: goodTable.entries()) {
+			double unit = element.getValue();
+			assertFalse(unit == 4.1);
+		}
+	}
+	
+	@Test
+	void testRemoveOnEmpty() {
+		assertEquals(null,goodTable.remove(sarah));
+	}
+	
+	@Test
+	void testRemoveTwice() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		goodTable.put(sarah, 4.1);
+		assertEquals(3.22,goodTable.remove(david));
+		assertEquals(null,goodTable.remove(david));
+	}
+	
+	@Test
+	void testRemoveNonItem() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		assertEquals(null,goodTable.remove(sarah));
+	}
+	
+	@Test
+	void testRemoveAndGet() {
+		goodTable.put(john, 3.8);
+		goodTable.put(jacob, 4.0);
+		goodTable.put(david, 3.22);
+		assertEquals(3.22, goodTable.remove(david));
+		assertEquals(null, goodTable.get(david));
+	}
 
 //-----------------------remove Tests End----------------------------
 
